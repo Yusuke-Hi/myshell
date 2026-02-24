@@ -10,7 +10,7 @@
 
 int main() {
   while (1) {
-    printf("$ ");
+    printf("myshell> ");
     // input
     char buf[MAXPROMPTSIZE];
     fgets(buf, sizeof(buf), stdin);
