@@ -5,21 +5,23 @@
 #define MAXARGSIZE 128
 
 int main() {
-  // input
-  char buf[MAXPROMPTSIZE];
-  fgets(buf, sizeof(buf), stdin);
-  char* p = strchr(buf, '\n');
-  if (p != NULL) {
-    *p = '\0';
-  }
+  while (1) {
+    // input
+    char buf[MAXPROMPTSIZE];
+    fgets(buf, sizeof(buf), stdin);
+    char* p = strchr(buf, '\n');
+    if (p != NULL) {
+      *p = '\0';
+    }
 
-  char* argv[MAXARGSIZE];
-  int argv_i = 0;
-  char* token = strtok(buf, " ");
-  while (token != NULL) {
-    argv[argv_i] = token;
-    ++argv_i;
-    token = strtok(NULL, " ");
+    char* argv[MAXARGSIZE];
+    int argv_i = 0;
+    char* token = strtok(buf, " ");
+    while (token != NULL) {
+      argv[argv_i] = token;
+      ++argv_i;
+      token = strtok(NULL, " ");
+    }
+    argv[argv_i] = NULL;
   }
-  argv[argv_i] = NULL;
 }
