@@ -8,10 +8,15 @@
 ## Input
 ### API
 fgets was adopted.\
-Because of the following reasons.\
+Because of the following reasons.
 - scanf: not secure and prompt will be separeted by spaces.
 - getline: suitable and modern api, but it is too usefull.
 - fgets: suitable for studing.
 ### Buffer size
-
+1024
+### Line breaks
+Remove line breaks with strchr.\
+Execute as if even if there is no line break.
+### Token
+To split prompt with space as tokens, strtok was adopted.
 
