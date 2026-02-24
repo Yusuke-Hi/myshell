@@ -1,3 +1,4 @@
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -34,18 +35,21 @@ int main() {
     argv[argv_i] = NULL;
 
     // fork
+    signal(SIGINT, SIG_IGN);
     pid_t pid = fork();
     switch (pid) {
       case -1:
         perror("fork");
         exit(EXIT_FAILURE);
       case 0:
+        signal(SIGINT, SIG_DFL);
         if (execvp(argv[0], argv) == -1) {
           perror("execvp failed");
           exit(EXIT_FAILURE);
         }
       default:
         wait(NULL);
+        signal(SIGINT, SIG_DFL);
     }
   }
 }
