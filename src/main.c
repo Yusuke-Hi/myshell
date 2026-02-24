@@ -18,6 +18,9 @@ int main() {
     if (p != NULL) {
       *p = '\0';
     }
+    if (buf[0] == '\0') {
+      continue;
+    }
 
     char* argv[MAXARGSIZE];
     int argv_i = 0;
