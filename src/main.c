@@ -6,6 +6,7 @@
 
 int main() {
   while (1) {
+    printf("$ ");
     // input
     char buf[MAXPROMPTSIZE];
     fgets(buf, sizeof(buf), stdin);
