@@ -34,6 +34,12 @@ int main() {
     }
     argv[argv_i] = NULL;
 
+    // builtin
+    if (strncmp(argv[0], "cd", strlen(argv[0])) == 0) {
+      chdir(argv[1]);
+      continue;
+    }
+
     // fork
     signal(SIGINT, SIG_IGN);
     pid_t pid = fork();
