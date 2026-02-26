@@ -35,8 +35,14 @@ int main() {
     argv[argv_i] = NULL;
 
     // builtin
-    if (strncmp(argv[0], "cd", strlen(argv[0])) == 0) {
-      chdir(argv[1]);
+    if (strcmp(argv[0], "cd") == 0) {
+      if (argv[1] == NULL) {
+        fprintf(stderr, "cd: missing argument\n");
+      } else if (argv[2] != NULL) {
+        fprintf(stderr, "cd: too many arguments\n");
+      } else if (chdir(argv[1]) == -1) {
+        perror("cd");
+      }
       continue;
     }
 
