@@ -40,7 +40,7 @@ int main() {
     int second_redirect_flg = 0;
     for (int i = 0; argv[i] != NULL; ++i) {
       if (strcmp(argv[i], ">") == 0) {
-        if (redirect_index == 1) {
+        if (redirect_index != -1) {
           second_redirect_flg = 1;
           fprintf(stderr, ">: use only one >\n");
           break;
