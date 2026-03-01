@@ -16,7 +16,10 @@ int main() {
     fflush(stdout);
     // input
     char buf[MAXPROMPTSIZE];
-    fgets(buf, sizeof(buf), stdin);
+    if (fgets(buf, sizeof(buf), stdin) == NULL) {
+      printf("\n");
+      break;
+    }
     char* p = strchr(buf, '\n');
     if (p != NULL) {
       *p = '\0';
@@ -35,14 +38,18 @@ int main() {
     }
     argv[argv_i] = NULL;
 
+    // TODO: 構造体にしてもいいかもしれない
     int redirect_index = -1;
     int redirect_no_argument_flg = 0;
     int second_redirect_flg = 0;
+    int pipe_index = -1;
+    int pipe_no_argument_flg = 0;
+    int second_pipe_flg = 0;
     for (int i = 0; argv[i] != NULL; ++i) {
       if (strcmp(argv[i], ">") == 0) {
         if (redirect_index != -1) {
           second_redirect_flg = 1;
-          fprintf(stderr, ">: use only one >\n");
+          fprintf(stderr, ">: use only one time\n");
           break;
         }
         if (argv[i + 1] == NULL) {
@@ -52,9 +59,22 @@ int main() {
         }
         redirect_index = i;
         argv[redirect_index] = NULL;
+      } else if (strcmp(argv[i], "|") == 0) {
+        if (pipe_index != -1) {
+          second_pipe_flg = 1;
+          fprintf(stderr, "|: use only one time\n");
+          break;
+        }
+        if (argv[i + 1] == NULL) {
+          fprintf(stderr, "|: missing argument\n");
+          pipe_no_argument_flg = 1;
+          break;
+        }
+        pipe_index = i;
       }
     }
-    if (redirect_no_argument_flg == 1 || second_redirect_flg == 1) {
+    if (redirect_no_argument_flg == 1 || second_redirect_flg == 1 ||
+        pipe_no_argument_flg == 1 || second_pipe_flg == 1) {
       continue;
     }
 
@@ -67,6 +87,64 @@ int main() {
       } else if (chdir(argv[1]) == -1) {
         perror("cd");
       }
+      continue;
+    }
+
+    // fork for pipe
+    if (pipe_index != -1) {
+      char* left_argv[MAXARGSIZE];
+      for (int i = 0; i < pipe_index; ++i) {
+        left_argv[i] = argv[i];
+      }
+      left_argv[pipe_index] = NULL;
+
+      char* right_argv[MAXARGSIZE];
+      int idx = 0;
+      while (1) {
+        right_argv[idx] = argv[pipe_index + 1 + idx];
+        if (argv[pipe_index + 1 + idx] == NULL) {
+          break;
+        }
+        ++idx;
+      }
+
+      int pipefd[2];
+      if (pipe(pipefd) == -1) {
+        perror("failed to pipe\n");
+        continue;
+      }
+      signal(SIGINT, SIG_IGN);
+      pid_t pid1 = fork();
+      switch (pid1) {
+        case -1:
+          perror("failed to fork\n");
+          exit(EXIT_FAILURE);
+        case 0:
+          signal(SIGINT, SIG_DFL);
+          close(pipefd[0]);
+          dup2(pipefd[1], STDOUT_FILENO);
+          close(pipefd[1]);
+          execvp(left_argv[0], left_argv);
+        default:
+          pid_t pid2 = fork();
+          switch (pid2) {
+            case -1:
+              perror("failed to fork\n");
+              exit(EXIT_FAILURE);
+            case 0:
+              signal(SIGINT, SIG_DFL);
+              close(pipefd[1]);
+              dup2(pipefd[0], STDIN_FILENO);
+              close(pipefd[0]);
+              execvp(right_argv[0], right_argv);
+            default:
+              close(pipefd[0]);
+              close(pipefd[1]);
+              waitpid(pid1, NULL, 0);
+              waitpid(pid2, NULL, 0);
+          }
+      }
+
       continue;
     }
 
@@ -98,7 +176,6 @@ int main() {
         }
       default:
         wait(NULL);
-        signal(SIGINT, SIG_DFL);
     }
   }
 }
