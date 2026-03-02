@@ -7,8 +7,11 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-#define MAXPROMPTSIZE 1024
-#define MAXARGSIZE 128
+#include "constants.h"
+
+enum {
+  MAXPROMPTSIZE = 1024,
+};
 
 int main() {
   while (1) {

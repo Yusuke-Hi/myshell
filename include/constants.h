@@ -1,0 +1,9 @@
+
+#ifndef CONSTANTS_HEADER
+#define CONSTANTS_HEADER
+
+enum {
+  MAXARGSIZE = 128,
+};
+
+#endif  // CONSTANTS_HEADER
