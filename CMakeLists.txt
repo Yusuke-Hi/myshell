@@ -4,11 +4,10 @@ project(myshell C)
 # Specify the directory for header files
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
-# Generate executable file (for all .c files in src)
-# file(GLOB SOURCES "src/*.c");
 add_executable(${PROJECT_NAME} 
   src/main.c
   src/builtin.c
+  src/executer.c
   src/mysignal.c
   src/parser.c
 )
@@ -17,6 +16,7 @@ add_executable(${PROJECT_NAME}
 install(TARGETS ${PROJECT_NAME} DESTINATION bin)
 install(FILES
   include/buitin.h
+  include/executer.h
   include/mysignal.h
   include/parser.h
   DESTINATION include/myshell
