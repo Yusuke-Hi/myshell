@@ -1,5 +1,4 @@
 #include <fcntl.h>
-#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -7,7 +6,9 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
+#include "builtin.h"
 #include "constants.h"
+#include "mysignal.h"
 #include "parser.h"
 
 enum {
@@ -49,14 +50,14 @@ int main() {
         perror("failed to pipe\n");
         continue;
       }
-      signal(SIGINT, SIG_IGN);
+      IgnoreSigint();
       pid_t pid1 = fork();
       switch (pid1) {
         case -1:
           perror("failed to fork\n");
           exit(EXIT_FAILURE);
         case 0:
-          signal(SIGINT, SIG_DFL);
+          RestoreSigint();
           close(pipefd[0]);
           dup2(pipefd[1], STDOUT_FILENO);
           close(pipefd[1]);
@@ -68,7 +69,7 @@ int main() {
               perror("failed to fork\n");
               exit(EXIT_FAILURE);
             case 0:
-              signal(SIGINT, SIG_DFL);
+              RestoreSigint();
               close(pipefd[1]);
               dup2(pipefd[0], STDIN_FILENO);
               close(pipefd[0]);
@@ -85,14 +86,14 @@ int main() {
     }
 
     // fork
-    signal(SIGINT, SIG_IGN);
+    IgnoreSigint();
     pid_t pid = fork();
     switch (pid) {
       case -1:
         perror("fork");
         exit(EXIT_FAILURE);
       case 0:
-        signal(SIGINT, SIG_DFL);
+        RestoreSigint();
         if (parse_result.redirect_index != -1) {
           int fd = open(argv[parse_result.redirect_index + 1],
                         O_WRONLY | O_CREAT | O_TRUNC, 0644);
