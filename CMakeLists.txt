@@ -8,12 +8,14 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 # file(GLOB SOURCES "src/*.c");
 add_executable(${PROJECT_NAME} 
   src/main.c
+  src/builtin.c
   src/parser.c
 )
 
 # Installation Settings
 install(TARGETS ${PROJECT_NAME} DESTINATION bin)
 install(FILES
+  include/buitin.h
   include/parser.h
   DESTINATION include/myshell
 )

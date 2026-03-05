@@ -38,14 +38,7 @@ int main() {
     ParseResult parse_result = ParsePrompt(argv);
 
     // builtin
-    if (strcmp(argv[0], "cd") == 0) {
-      if (argv[1] == NULL) {
-        fprintf(stderr, "cd: missing argument\n");
-      } else if (argv[2] != NULL) {
-        fprintf(stderr, "cd: too many arguments\n");
-      } else if (chdir(argv[1]) == -1) {
-        perror("cd");
-      }
+    if (Builtin(argv)) {
       continue;
     }
 
