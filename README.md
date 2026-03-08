@@ -3,6 +3,8 @@
 A simple Unix shell implementation written in C.
 This project was created to learn process control and OS concepts.
 
+![alt text](docs/demo.png)
+
 ## Features
 
 - Execute commands
@@ -43,6 +45,8 @@ Handle built-in commands like cd
 
 ### mysignal
 Handle signal behavior (SIGINT)
+
+Detail: https://github.com/Yusuke-Hi/myshell/blob/main/docs/design.md
 
 ## Future Work
 
