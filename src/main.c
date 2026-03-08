@@ -6,7 +6,7 @@
 
 #include "builtin.h"
 #include "constants.h"
-#include "executer.h"
+#include "executor.h"
 #include "mysignal.h"
 
 enum {

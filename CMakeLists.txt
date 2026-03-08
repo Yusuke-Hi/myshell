@@ -7,7 +7,7 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 add_executable(${PROJECT_NAME} 
   src/main.c
   src/builtin.c
-  src/executer.c
+  src/executor.c
   src/mysignal.c
   src/parser.c
 )
@@ -16,7 +16,7 @@ add_executable(${PROJECT_NAME}
 install(TARGETS ${PROJECT_NAME} DESTINATION bin)
 install(FILES
   include/buitin.h
-  include/executer.h
+  include/executor.h
   include/mysignal.h
   include/parser.h
   DESTINATION include/myshell
