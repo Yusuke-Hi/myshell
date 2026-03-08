@@ -32,6 +32,8 @@ myshell> ls | grep main
 
 ## Architecture
 
+See [design.md](docs/design.md) for details.
+
 myshell is composed of the following modules.
 
 ### parser
@@ -45,8 +47,6 @@ Handle built-in commands like cd
 
 ### mysignal
 Handle signal behavior (SIGINT)
-
-Detail: https://github.com/Yusuke-Hi/myshell/blob/main/docs/design.md
 
 ## Future Work
 
