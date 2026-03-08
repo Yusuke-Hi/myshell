@@ -41,3 +41,11 @@ Handle built-in commands like cd
 
 ### mysignal
 Handle signal behavior (SIGINT)
+
+## Future Work
+
+- Input redirection (<)
+- Append redirection (>>)
+- Multiple pipes (cmd1 | cmd2 | cmd3)
+- exit builtin
+- job control (Ctrl+Z, fg, bg)
