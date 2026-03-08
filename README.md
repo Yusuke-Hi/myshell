@@ -19,12 +19,14 @@ cmake ..
 make
 
 ## Run
-
+```bash
 ./myshell
 myshell> ls
+myshell> cd ..
 myshell> echo hello > file.txt
 myshell> cat file.txt
 myshell> ls | grep main
+```
 
 ## Architecture
 
