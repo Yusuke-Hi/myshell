@@ -14,11 +14,12 @@ This project was created to learn process control and OS concepts.
 - Signal handling (Ctrl+C)
 
 ## Build
-
+```
 mkdir build
 cd build
 cmake ..
 make
+```
 
 ## Run
 ```bash
